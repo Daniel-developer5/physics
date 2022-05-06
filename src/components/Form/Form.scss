@@ -1,0 +1,43 @@
+.App-form {
+  display: inline-block;
+
+  .MuiCard-root {
+    padding: 24px;
+    background-color: #fae8ec;
+
+    .button-box {
+      margin-top: 16px;
+    }
+
+    .height-input, .MuiSelect-select {
+      background-color: #fff;
+    }
+
+    .height-input {
+      .MuiOutlinedInput-root {
+        border-radius: 4px 0 0 4px;
+      }
+    }
+
+    .size-select {
+      min-width: 68px;
+      border-radius: 0 4px 4px 0;
+
+      .MuiOutlinedInput-notchedOutline {
+        border-left: none;
+      }
+    }
+  }
+
+  .radio-buttons {
+    margin-top: 24px;
+  }
+
+  .round-result-input {
+    margin-top: 24px;
+  }
+
+  label {
+    font-family: 'Roboto', sans-serif;
+  }
+}

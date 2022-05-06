@@ -1,0 +1,12 @@
+.App-sidebar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+
+  .formula-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    font-size: 32px;
+  }
+}
