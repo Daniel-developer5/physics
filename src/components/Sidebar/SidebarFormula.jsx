@@ -1,29 +1,44 @@
-import { MathJax, MathJaxContext } from "better-react-mathjax"
+import { MathJax, MathJaxContext } from 'better-react-mathjax'
+import { useContext, useEffect } from 'react'
+import { AppContext } from '../../App'
 
 const SidebarFormula = ({
   heightFormula, resultIn, digitsAfterDot
 }) => {
+  const { setFallTime } = useContext(AppContext)
+
   const config = {
     loader: { load: ['input/asciimath'] },
   }
 
-  let answer = Math.sqrt(+heightFormula * 2 / 9.8)
+  const getTime = height => +height ? Math.sqrt(+height * 2 / 9.8) : null
 
-  if (resultIn === 'm') {
-    answer /= 60
-  } else if (resultIn === 'h') {
-    answer = answer / 60 / 60
+  useEffect(() => {
+    if (+heightFormula) {
+      setFallTime(getTime(heightFormula))
+    }
+  }, [heightFormula])
+
+  const getEqualStr = (height, resultIn) => {
+    let answer = getTime(height)
+
+    if (resultIn === 'm') {
+      answer /= 60
+    } else if (resultIn === 'h') {
+      answer = answer / 60 / 60
+    }
+
+    return +height
+    ? ` = ${answer.toFixed(digitsAfterDot > 0 ? digitsAfterDot : 0)}${resultIn}`
+    : ''
   }
 
   const input = (heightFormula && heightFormula !== 'h') ? ` * ${heightFormula}` : 'h'
-  const equalStr = +heightFormula
-    ? ` = ${answer.toFixed(digitsAfterDot > 0 ? digitsAfterDot : 0)}${resultIn}`
-    : ''
 
   return (
     <MathJaxContext config={config}>
       <MathJax>{
-        "`t = sqrt(frac(2" + input + ")(g))" + equalStr + "`"
+        "`t = sqrt(frac(2" + input + ")(g))" + getEqualStr(heightFormula, resultIn) + "`"
       }</MathJax>
     </MathJaxContext>
   )

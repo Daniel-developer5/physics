@@ -1,4 +1,4 @@
-import colors from './colors'
+import { colors } from './styles'
 import canvasConfig from './canvasConfig'
 
 const drawAim = () => {

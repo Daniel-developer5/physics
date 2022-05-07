@@ -1,11 +1,16 @@
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import AppCanvas from './draw'
 import canvasConfig from './draw/canvasConfig'
+import { AppContext } from '../../App'
 
 import './Canvas.scss'
 
 const Canvas = () => {
   const canvasRef = useRef()
+  const {
+    fallTime, height, lengthUnit,
+    startFall, setStartFall
+  } = useContext(AppContext)
   const appCanvas = new AppCanvas()
 
   useEffect(() => {
@@ -18,6 +23,22 @@ const Canvas = () => {
 
     appCanvas.draw()
   }, [])
+
+  useEffect(() => {
+    if (height && lengthUnit) {
+      appCanvas.height.draw(height, lengthUnit)
+    }
+
+    if (!height) {
+      appCanvas.height.clear()
+    }
+  }, [height, lengthUnit])
+
+  useEffect(() => {
+    if (startFall && height) {
+      console.log('start')
+    }
+  }, [startFall, height])
 
   return (
     <canvas

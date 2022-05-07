@@ -2,7 +2,8 @@ import {
   Button, Card, Checkbox, FormControlLabel, MenuItem,
   Radio, RadioGroup, Select, TextField
 } from '@mui/material'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { AppContext } from '../../App'
 
 import './Form.scss'
 
@@ -10,14 +11,16 @@ const Form = ({
   setHeightFormula, resultIn, setResultIn,
   digitsAfterDot, setDigitsAfterDot
 }) => {
-  const [ height, setHeight ] = useState('')
-  const [ size, setSize ] = useState('m')
   const [ autoconvert, setAutoconvert ] = useState(true)
+  const {
+    height, setHeight, lengthUnit, 
+    setLengthUnit, setStartFall, startFall
+  } = useContext(AppContext)
   
   const setFormulaBySize = (value, paramSize) => {
-    if ((paramSize || size) === 'cm') {
+    if ((paramSize || lengthUnit) === 'cm') {
       setHeightFormula(value / 100)
-    } else if ((paramSize || size) === 'km') {
+    } else if ((paramSize || lengthUnit) === 'km') {
       setHeightFormula(value * 1000)
     } else {
       setHeightFormula(value)
@@ -52,7 +55,7 @@ const Form = ({
 
     if (autoconvert) {
       if (numHeight) {
-        switch (size) {
+        switch (lengthUnit) {
           case 'm':
             convertSizes(value, 'cm', numHeight * 100, 'km', numHeight / 1000)
             break
@@ -68,11 +71,19 @@ const Form = ({
       setFormulaBySize(numHeight, value)
     }
 
-    setSize(value)
+    setLengthUnit(value)
+  }
+
+  const onSubmit = e => {
+    e.preventDefault()
+    
+    if (!startFall) {
+      setStartFall(true)
+    }
   }
 
   return (
-    <form className='App-form'>
+    <form className='App-form' onSubmit={onSubmit}>
       <Card>
         <div className='input-fields'>
           <TextField
@@ -84,7 +95,7 @@ const Form = ({
             className='height-input'
           />
           <Select
-            value={size}
+            value={lengthUnit}
             className='size-select'
             onChange={onChangeSize}
           >
@@ -129,6 +140,7 @@ const Form = ({
           <Button
             variant='contained'
             color='primary'
+            type='submit'
           >Start</Button>
         </div>
       </Card>
